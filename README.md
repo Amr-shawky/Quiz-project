@@ -1,2 +1,2 @@
-#Quiz project
-## small quiz project system
+##small Quiz project system
+
