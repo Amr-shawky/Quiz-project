@@ -51,7 +51,15 @@
             
             // TODO 8: Within the event handler function,
             // Get the guessed value from the clicked button
+            let guessedValue = event.target.textContent;
             // Use a conditional to compare the guess to the fact's answer
             // and add the "correct"/"incorrect" class as appropriate
-        })
+            if (isCorrect(guessedValue)) {
+                // Add the "correct" class as appropriate
+                event.target.classList.add("correct");
+            } else {
+                // Add the "incorrect" class as appropriate
+                event.target.classList.add("incorrect");
+            }
+        });
     }
