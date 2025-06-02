@@ -11,8 +11,13 @@ main {
     min-width: 25rem;
     max-width: 50%;
     margin: 0px auto;
-    display:flex; 
+    display: flex;
     flex-direction: column;
+}
+#question-number {
+    text-align: center;
+    font-size: large;
+    margin-bottom: 1rem;
 }
 #statement {
     border: 1px solid black;
@@ -24,23 +29,38 @@ main {
     margin: 1rem 0px;
     min-height: 2em;
 }
+#options {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
 #explanation {
+    margin-top: 1rem;
     padding: 1rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
     text-align: center;
 }
-#options {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
 button {
-    padding: 0.5rem;
-    font-size: medium;
+    padding: 0.5rem 1rem;
+    font-size: large;
+    border: none;
     border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #e0e0e0;
+}
+button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 .correct {
-    background-color: lightgreen;
+    background-color: #aaffaa;
 }
 .incorrect {
-    background-color: lightpink;
+    background-color: #ffaaaa;
 }

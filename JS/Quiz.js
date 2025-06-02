@@ -1,65 +1,94 @@
+// Get DOM elements
+const questionNumber = document.getElementById('question-number');
+const statement = document.getElementById('statement');
+const optionButtons = document.querySelector('#options');
+const explanation = document.getElementById('explanation');
+const nextButton = document.getElementById('next');
 
-
-    // TODO 1: Declare & assign variables pointing to the corresponding element(s)
-    // statement should be the "statement" div
-    const statement = document.getElementById("statement");
-    // optionButtons should be all the elements within the "options" div
-    const optionButtons = document.querySelector("#options");
-    // explanation should be the "explanation" div
-    const explanation = document.getElementById("explanation");
-
-    // TODO 2: Declare & assign a variable called fact
-    // Its value should be an object with a statement, true/false answer, and explanation 
-    const fact = {
-        statement :"Arrays are like objects",
-        answer :true,
-        explanation:"Arrays are kind of object with special properties"
-    };
-    
-    // TODO 3: Set the text of the statement element to the fact's statement
-    statement.textContent = fact.statement;
-        
-
-    // TODO 4: Declare disable & enable functions to set or remove the "disabled" attribute from a given button element
-    // disable(button) should set the button element's attribute "disabled" to the value ""
-    const disable = (button)=>{
-        button.setAttribute("disabled","");
-    };
-    // enable(button) should remove the attribute "disabled" from the button element
-    const enable = (button)=>button.removeAttribute("disabled");
-
-
-    // TODO 5: Declare an isCorrect function that compares a guess to the right answer
-    // isCorrect(guess) should return true if the guess matches the fact's answer
-    function isCorrect(guessString){
-        return guessString === fact.answer.toString();
+// Array of quiz questions
+const questions = [
+    {
+        statement: "Arrays are like objects",
+        answer: true,
+        explanation: "Arrays are a kind of object with special properties."
+    },
+    {
+        statement: "JavaScript is a statically typed language",
+        answer: false,
+        explanation: "JavaScript is dynamically typed."
+    },
+    {
+        statement: "The 'this' keyword in JavaScript always refers to the global object",
+        answer: false,
+        explanation: "The value of 'this' depends on how the function is called."
     }
+];
 
+// Initialize quiz state
+let currentQuestionIndex = 0;
+let score = 0;
 
-    // TODO 6A: Use a for loop to add a click event listener to each of the optionButtons
+// Function to disable a button
+const disable = (button) => {
+    button.setAttribute('disabled', '');
+};
+
+// Function to enable a button
+const enable = (button) => {
+    button.removeAttribute('disabled');
+};
+
+// Function to check if the guess is correct
+function isCorrect(guessString) {
+    const guess = guessString === 'true';
+    return guess === questions[currentQuestionIndex].answer;
+}
+
+// Function to display the current question
+function displayQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    questionNumber.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+    statement.textContent = currentQuestion.statement;
+    explanation.textContent = '';
     for (let button of optionButtons.children) {
-        button.addEventListener("click", (event) => { 
-            // TODO 6B: Within the event handler function, display the fact's explanation by setting the text of the explanation element
-            explanation.textContent = fact.explanation;
-            
-            // TODO 7: Within the event handler function, 
-            // Use a for loop to disable all the option buttons
-            for (let btn of optionButtons.children) {
-                disable(btn);
-            }
-            
-            
-            // TODO 8: Within the event handler function,
-            // Get the guessed value from the clicked button
-            let guessedValue = event.target.textContent;
-            // Use a conditional to compare the guess to the fact's answer
-            // and add the "correct"/"incorrect" class as appropriate
-            if (isCorrect(guessedValue)) {
-                // Add the "correct" class as appropriate
-                event.target.classList.add("correct");
-            } else {
-                // Add the "incorrect" class as appropriate
-                event.target.classList.add("incorrect");
-            }
-        });
+        enable(button);
+        button.classList.remove('correct', 'incorrect');
     }
+    nextButton.style.display = 'none';
+}
+
+// Add event listeners to option buttons
+for (let button of optionButtons.children) {
+    button.addEventListener('click', (event) => {
+        const guessedValue = event.target.value;
+        const currentQuestion = questions[currentQuestionIndex];
+        explanation.textContent = currentQuestion.explanation;
+        for (let btn of optionButtons.children) {
+            disable(btn);
+        }
+        if (isCorrect(guessedValue)) {
+            score++;
+            event.target.classList.add('correct');
+        } else {
+            event.target.classList.add('incorrect');
+        }
+        nextButton.style.display = 'block';
+    });
+}
+
+// Add event listener to the next button
+nextButton.addEventListener('click', () => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+    } else {
+        questionNumber.textContent = '';
+        statement.textContent = `Quiz completed! Your score is ${score} out of ${questions.length}.`;
+        optionButtons.style.display = 'none';
+        explanation.textContent = '';
+        nextButton.style.display = 'none';
+    }
+});
+
+// Start the quiz by displaying the first question
+displayQuestion();
